@@ -27,7 +27,7 @@ router.post("/register", (request, response) => {
   );
 });
 
-//login user- mobile
+//login user- mobile 
 router.post("/login/mobile", (request, response) => {
   const { email, password } = request.body
   const statement = "SELECT * FROM User WHERE email=? and password=?"

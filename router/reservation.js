@@ -14,10 +14,13 @@ function logRequest(req, res, next) {
 //see all Booking -TSETED
 router.get("/bookings", (req, res) => {
   const query = `
-    SELECT r.*, b.*, u.firstName, u.lastName
-    FROM Reservation AS r
-    JOIN Room AS b ON r.room_number = b.room_number
-    JOIN User AS u ON r.user_id = u.user_id
+  SELECT R.*, RT.images, U.firstName, U.lastName
+  FROM Reservation AS R
+  JOIN Room AS RT ON R.room_number = RT.room_number
+  JOIN User AS U ON R.user_id = U.user_id
+  LEFT JOIN Confirmation AS C ON R.reservation_id = C.reservation_id
+  WHERE C.reservation_id IS NULL;
+  
   `;
   
   db.query(query, (error, result) => {

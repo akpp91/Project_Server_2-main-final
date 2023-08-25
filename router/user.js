@@ -14,10 +14,9 @@ function logRequest(req, res, next) {
 }
 
 router.post("/register", (request, response) => {
-  const { firstName, lastName, email, phoneNumber, password } = request.body;
-  const role = "user"; // Assuming a default role of "user"
+  const { firstName, lastName, email, phoneNumber, password ,role} = request.body;
 
-  console.log("First Name:", firstName,lastName, email, phoneNumber, password );
+  console.log("First Name:", firstName,lastName, email, phoneNumber, password ,role);
   db.query(
     "INSERT INTO User (firstName, lastName, Role, email, phoneNumber, password) VALUES (?, ?, ?, ?, ?, ?)",
     [firstName, lastName, role, email, phoneNumber, password],
@@ -62,7 +61,7 @@ router.post("/login", (request, response) => {
         utils.createResult(null, {
           name: `${user['firstName']} ${user['lastName']}`,
           Role  : user['Role'],
-         
+         userId : user['user_id']
           
         })
       )

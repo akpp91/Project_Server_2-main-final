@@ -11,7 +11,7 @@ function logRequest(req, res, next) {
   console.log(`Received ${req.method} request to ${req.path}`);
   console.log("Request Body:", req.body);
   next();
-}
+} 
 
 router.post("/register", (request, response) => {
   const { firstName, lastName, email, phoneNumber, password ,role} = request.body;

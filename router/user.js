@@ -1,7 +1,8 @@
 const express = require("express")
 const db = require("../db")
 const utils = require("../utils")
-
+//crpto included
+const crypto = require('crypto-js');
 
 
 const router = express.Router()
@@ -12,6 +13,39 @@ function logRequest(req, res, next) {
   console.log("Request Body:", req.body);
   next();
 } 
+
+
+router.post("/crp/register", (request, response) => {
+  const { firstName, lastName, email, phoneNumber, password, role } = request.body;
+
+  // Hash the password using crypto-js
+  const hashedPassword = crypto.SHA256(password).toString();
+
+  db.query(
+    "INSERT INTO User (firstName, lastName, Role, email, phoneNumber, password) VALUES (?, ?, ?, ?, ?, ?)",
+    [firstName, lastName, role, email, phoneNumber, hashedPassword], // Store the hashed password
+    (error, result) => {
+      response.send(utils.createResult(error, result));
+    }
+  );
+});
+
+//crpto included
+router.post("/crp/react_user_login", (request, response) => {
+  console.log("inside login");
+  const { email, password } = request.body;
+  
+  // Hash the provided password using crypto-js
+  const hashedPassword = crypto.SHA256(password).toString();
+
+  const statement = "SELECT * FROM User WHERE email=? and password=?";
+  db.query(statement, [email, hashedPassword], (error, result) => {
+    console.log(result);
+    console.log(error);
+
+    response.send(utils.createResult(error, result));
+  });
+});
 
 router.post("/register", (request, response) => {
   const { firstName, lastName, email, phoneNumber, password ,role} = request.body;
